@@ -1,6 +1,6 @@
 <template>
-    <main>
-        <div class="flex justify-center gap-10 p-10">
+    <main class="w-full overflow-auto h-full">
+        <div class="flex justify-start gap-10 p-10 w-fit">
             <section @drop="onDrop($event, board)" @dragover.prevent @dragenter.prevent v-for="board in boards"
                 :key="board.id" class="group relative bg-slate-200 rounded-xl p-5 w-full max-w-80">
                 <span class="absolute -top-6 text-slate-400 font-semibold left-2">{{ board.items.length }}</span>
@@ -40,8 +40,28 @@
                             </svg>
                         </button>
                     </div>
+                    <h1 v-if="board.items.length === 0"
+                        class="font-semibold text-md text-slate-500 px-5 w-full mb-4 bg-transparent outline-none">
+                        No hay tareas para mostrar</h1>
                 </div>
             </section>
+            <form @submit.prevent="insertBoard($event)"
+                class="group relative bg-slate-200 rounded-xl p-5  w-56 min-w-56 h-fit overflow-hidden">
+                <h1 class="font-semibold text-md text-slate-500 px-5 w-full mb-4 bg-transparent outline-none">Agregar
+                    tablero</h1>
+                <div class="flex gap-5">
+                    <input class="rounded-md border border-slate-400 bg-slate-50 p-2 w-full" name="appendBoard" />
+                    <button type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 48 48">
+                            <circle cx="24" cy="24" r="21" fill="#4caf50" />
+                            <g fill="#fff">
+                                <path d="M21 14h6v20h-6z" />
+                                <path d="M14 21h20v6H14z" />
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+            </form>
         </div>
     </main>
 </template>
@@ -51,36 +71,24 @@ import { reactive } from 'vue';
 let boards = reactive(
     [
         {
-        id: crypto.randomUUID(),
-        name: 'tablero 1',
-        inputIsActive: false,
-        items: [
-            {
-                id: crypto.randomUUID(),
-                title: 'Resolver algo1'
-            },
-            {
-                id: crypto.randomUUID(),
-                title: 'Resolver algo2'
-            },
-            {
-                id: crypto.randomUUID(),
-                title: 'Resolver algo3'
-            }
-        ]
-    },
-    {
-        id: crypto.randomUUID(),
-        name: 'tablero 2',
-        inputIsActive: false,
-        items: [
-            {
-                id: crypto.randomUUID(),
-                title: 'Resolver algo 2 2'
-            }
-        ]
-    }
-]
+            id: crypto.randomUUID(),
+            name: 'Tareas',
+            inputIsActive: false,
+            items: []
+        },
+        {
+            id: crypto.randomUUID(),
+            name: 'Iniciado',
+            inputIsActive: false,
+            items: []
+        },
+        {
+            id: crypto.randomUUID(),
+            name: 'Finalizado',
+            inputIsActive: false,
+            items: []
+        }
+    ]
 )
 
 const onDrop = (event, board) => {
@@ -106,6 +114,15 @@ const removeTask = (board, task) => {
 const insertTask = (event, board) => {
     boards.find(u => u == board).items.push({ id: crypto.randomUUID(), title: event.target.elements.appendTask.value })
     event.target.elements.appendTask.value = "";
+}
+const insertBoard = (event) => {
+    boards.push({
+        id: crypto.randomUUID(),
+        name: event.target.elements.appendBoard.value,
+        inputIsActive: false,
+        items: []
+    })
+    event.target.elements.appendBoard.value = "";
 }
 
 </script>

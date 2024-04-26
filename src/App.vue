@@ -1,20 +1,17 @@
 <template>
-  <main>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <main class="h-screen grid grid-rows-[auto_1fr] overflow-none w-screen">
     <HeaderSec/>
     <MainHome/>
   </main>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import HeaderSec from './components/HeaderSec.vue'
 import MainHome from './components/MainHome.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
     HeaderSec,
     MainHome
   }
